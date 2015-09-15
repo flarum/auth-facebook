@@ -17,7 +17,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 use Flarum\Core\Settings\SettingsRepository;
 use Flarum\Http\UrlGeneratorInterface;
 use League\OAuth2\Client\Provider\Facebook;
-use Flarum\Forum\Actions\ExternalAuthenticatorTrait;
+use Flarum\Forum\Actions\AuthenticatorTrait;
 
 class LoginAction extends Action
 {
