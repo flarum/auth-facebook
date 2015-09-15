@@ -21,7 +21,7 @@ use Flarum\Forum\Actions\ExternalAuthenticatorTrait;
 
 class LoginAction extends Action
 {
-    use ExternalAuthenticatorTrait;
+    use AuthenticatorTrait;
 
     /**
      * @var SettingsRepository
