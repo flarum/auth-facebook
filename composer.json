@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Flarum\\Facebook\\": "src/"
+        }
+    },
+    "require": {
+        "league/oauth2-facebook": "~1.0"
+    }
+}
