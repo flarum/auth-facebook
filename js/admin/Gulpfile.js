@@ -2,6 +2,6 @@ var gulp = require('flarum-gulp');
 
 gulp({
   modules: {
-    'facebook': 'src/**/*.js'
+    'flarum/auth/facebook': 'src/**/*.js'
   }
 });

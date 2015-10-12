@@ -1,7 +1,7 @@
 import app from 'flarum/app';
 
-import FacebookSettingsModal from 'facebook/components/FacebookSettingsModal';
+import FacebookSettingsModal from 'flarum/auth/facebook/components/FacebookSettingsModal';
 
-app.initializers.add('facebook', () => {
-  app.extensionSettings.facebook = () => app.modal.show(new FacebookSettingsModal());
+app.initializers.add('flarum-auth-facebook', () => {
+  app.extensionSettings['flarum-auth-facebook'] = () => app.modal.show(new FacebookSettingsModal());
 });

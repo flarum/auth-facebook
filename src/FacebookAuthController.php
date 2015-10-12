@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Flarum\Facebook;
+namespace Flarum\Auth\Facebook;
 
-use Flarum\Support\Action;
+use Flarum\Forum\Controller\AuthenticateUserTrait;
+use Flarum\Forum\UrlGenerator;
+use Flarum\Http\Controller\ControllerInterface;
+use Flarum\Settings\SettingsRepository;
+use Illuminate\Contracts\Bus\Dispatcher;
+use League\OAuth2\Client\Provider\Facebook;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
-use Illuminate\Contracts\Bus\Dispatcher;
-use Flarum\Core\Settings\SettingsRepository;
-use Flarum\Http\UrlGeneratorInterface;
-use League\OAuth2\Client\Provider\Facebook;
-use Flarum\Forum\Actions\AuthenticatorTrait;
 
-class LoginAction extends Action
+class FacebookAuthController implements ControllerInterface
 {
-    use AuthenticatorTrait;
+    use AuthenticateUserTrait;
 
     /**
      * @var SettingsRepository
@@ -29,16 +29,16 @@ class LoginAction extends Action
     protected $settings;
 
     /**
-     * @var UrlGeneratorInterface
+     * @var UrlGenerator
      */
     protected $url;
 
     /**
      * @param SettingsRepository $settings
-     * @param UrlGeneratorInterface $url
+     * @param UrlGenerator $url
      * @param Dispatcher $bus
      */
-    public function __construct(SettingsRepository $settings, UrlGeneratorInterface $url, Dispatcher $bus)
+    public function __construct(SettingsRepository $settings, UrlGenerator $url, Dispatcher $bus)
     {
         $this->settings = $settings;
         $this->url = $url;
@@ -48,16 +48,16 @@ class LoginAction extends Action
     /**
      * @param Request $request
      * @param array $routeParams
-     * @return RedirectResponse|EmptyResponse
+     * @return \Psr\Http\Message\ResponseInterface|RedirectResponse
      */
     public function handle(Request $request, array $routeParams = [])
     {
         session_start();
 
         $provider = new Facebook([
-            'clientId'        => $this->settings->get('facebook.app_id'),
-            'clientSecret'    => $this->settings->get('facebook.app_secret'),
-            'redirectUri'     => $this->url->toRoute('facebook.login'),
+            'clientId'        => $this->settings->get('flarum-auth-facebook.app_id'),
+            'clientSecret'    => $this->settings->get('flarum-auth-facebook.app_secret'),
+            'redirectUri'     => $this->url->toRoute('auth.facebook'),
             'graphApiVersion' => 'v2.4',
         ]);
 
@@ -83,6 +83,6 @@ class LoginAction extends Action
         $email = $owner->getEmail();
         $username = preg_replace('/[^a-z0-9-_]/i', '', $owner->getName());
 
-        return $this->authenticated(compact('email'), compact('username'));
+        return $this->authenticate(compact('email'), compact('username'));
     }
 }

@@ -13,12 +13,12 @@ export default class FacebookSettingsModal extends SettingsModal {
     return [
       <div className="Form-group">
         <label>App ID</label>
-        <input className="FormControl" bidi={this.setting('facebook.app_id')}/>
+        <input className="FormControl" bidi={this.setting('flarum-auth-facebook.app_id')}/>
       </div>,
 
       <div className="Form-group">
         <label>App Secret</label>
-        <input className="FormControl" bidi={this.setting('facebook.app_secret')}/>
+        <input className="FormControl" bidi={this.setting('flarum-auth-facebook.app_secret')}/>
       </div>
     ];
   }
