@@ -25,7 +25,7 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "Facebook",
+            "title": "Facebook Login",
             "icon": {
                 "name": "facebook",
                 "backgroundColor": "#3b5998",
