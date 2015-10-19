@@ -13,7 +13,7 @@ namespace Flarum\Auth\Facebook;
 use Flarum\Forum\Controller\AuthenticateUserTrait;
 use Flarum\Forum\UrlGenerator;
 use Flarum\Http\Controller\ControllerInterface;
-use Flarum\Settings\SettingsRepository;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Bus\Dispatcher;
 use League\OAuth2\Client\Provider\Facebook;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -24,7 +24,7 @@ class FacebookAuthController implements ControllerInterface
     use AuthenticateUserTrait;
 
     /**
-     * @var SettingsRepository
+     * @var SettingsRepositoryInterface
      */
     protected $settings;
 
@@ -34,11 +34,11 @@ class FacebookAuthController implements ControllerInterface
     protected $url;
 
     /**
-     * @param SettingsRepository $settings
+     * @param SettingsRepositoryInterface $settings
      * @param UrlGenerator $url
      * @param Dispatcher $bus
      */
-    public function __construct(SettingsRepository $settings, UrlGenerator $url, Dispatcher $bus)
+    public function __construct(SettingsRepositoryInterface $settings, UrlGenerator $url, Dispatcher $bus)
     {
         $this->settings = $settings;
         $this->url = $url;
