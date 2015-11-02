@@ -1,23 +1,4 @@
-System.register('flarum/auth/facebook/main', ['flarum/app', 'flarum/auth/facebook/components/FacebookSettingsModal'], function (_export) {
-  'use strict';
-
-  var app, FacebookSettingsModal;
-  return {
-    setters: [function (_flarumApp) {
-      app = _flarumApp['default'];
-    }, function (_flarumAuthFacebookComponentsFacebookSettingsModal) {
-      FacebookSettingsModal = _flarumAuthFacebookComponentsFacebookSettingsModal['default'];
-    }],
-    execute: function () {
-
-      app.initializers.add('flarum-auth-facebook', function () {
-        app.extensionSettings['flarum-auth-facebook'] = function () {
-          return app.modal.show(new FacebookSettingsModal());
-        };
-      });
-    }
-  };
-});;System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flarum/components/SettingsModal'], function (_export) {
+System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flarum/components/SettingsModal'], function (_export) {
   'use strict';
 
   var SettingsModal, FacebookSettingsModal;
@@ -72,6 +53,26 @@ System.register('flarum/auth/facebook/main', ['flarum/app', 'flarum/auth/faceboo
       })(SettingsModal);
 
       _export('default', FacebookSettingsModal);
+    }
+  };
+});;
+System.register('flarum/auth/facebook/main', ['flarum/app', 'flarum/auth/facebook/components/FacebookSettingsModal'], function (_export) {
+  'use strict';
+
+  var app, FacebookSettingsModal;
+  return {
+    setters: [function (_flarumApp) {
+      app = _flarumApp['default'];
+    }, function (_flarumAuthFacebookComponentsFacebookSettingsModal) {
+      FacebookSettingsModal = _flarumAuthFacebookComponentsFacebookSettingsModal['default'];
+    }],
+    execute: function () {
+
+      app.initializers.add('flarum-auth-facebook', function () {
+        app.extensionSettings['flarum-auth-facebook'] = function () {
+          return app.modal.show(new FacebookSettingsModal());
+        };
+      });
     }
   };
 });
