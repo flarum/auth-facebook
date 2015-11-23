@@ -82,7 +82,8 @@ class FacebookAuthController implements ControllerInterface
 
         $email = $owner->getEmail();
         $username = preg_replace('/[^a-z0-9-_]/i', '', $owner->getName());
+        $avatarUrl = $owner->getPictureUrl();
 
-        return $this->authenticate(compact('email'), compact('username'));
+        return $this->authenticate(compact('email'), compact('username', 'avatarUrl'));
     }
 }
