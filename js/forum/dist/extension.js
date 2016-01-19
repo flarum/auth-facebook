@@ -20,9 +20,9 @@ System.register('flarum/auth/facebook/main', ['flarum/extend', 'flarum/app', 'fl
             LogInButton,
             {
               className: 'Button LogInButton--facebook',
-              icon: 'facebook',
+              icon: 'facebook-official',
               path: '/auth/facebook' },
-            'Log in with Facebook'
+            app.translator.trans('flarum-auth-facebook.forum.log_in.with_facebook_button')
           ));
         });
       });

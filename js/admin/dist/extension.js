@@ -23,7 +23,7 @@ System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flaru
         }, {
           key: 'title',
           value: function title() {
-            return 'Facebook Settings';
+            return app.translator.trans('flarum-auth-facebook.admin.facebook_settings.title');
           }
         }, {
           key: 'form',
@@ -34,7 +34,7 @@ System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flaru
               m(
                 'label',
                 null,
-                'App ID'
+                app.translator.trans('flarum-auth-facebook.admin.facebook_settings.app_id_label')
               ),
               m('input', { className: 'FormControl', bidi: this.setting('flarum-auth-facebook.app_id') })
             ), m(
@@ -43,7 +43,7 @@ System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flaru
               m(
                 'label',
                 null,
-                'App Secret'
+                app.translator.trans('flarum-auth-facebook.admin.facebook_settings.app_secret_label')
               ),
               m('input', { className: 'FormControl', bidi: this.setting('flarum-auth-facebook.app_secret') })
             )];
