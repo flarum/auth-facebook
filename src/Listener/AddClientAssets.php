@@ -30,15 +30,15 @@ class AddClientAssets
     {
         if ($event->isForum()) {
             $event->addAssets([
-                __DIR__ . '/../../js/forum/dist/extension.js',
-                __DIR__ . '/../../less/forum/extension.less'
+                __DIR__.'/../../js/forum/dist/extension.js',
+                __DIR__.'/../../less/forum/extension.less'
             ]);
             $event->addBootstrapper('flarum/auth/facebook/main');
         }
 
         if ($event->isAdmin()) {
             $event->addAssets([
-                __DIR__ . '/../../js/admin/dist/extension.js'
+                __DIR__.'/../../js/admin/dist/extension.js'
             ]);
             $event->addBootstrapper('flarum/auth/facebook/main');
         }
