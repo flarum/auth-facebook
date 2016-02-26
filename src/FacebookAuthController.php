@@ -15,7 +15,6 @@ use Flarum\Forum\Controller\AbstractOAuth2Controller;
 use Flarum\Settings\SettingsRepositoryInterface;
 use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 class FacebookAuthController extends AbstractOAuth2Controller
 {
