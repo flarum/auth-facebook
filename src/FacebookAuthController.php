@@ -13,8 +13,10 @@ namespace Flarum\Auth\Facebook;
 use Flarum\Forum\AuthenticationResponseFactory;
 use Flarum\Forum\Controller\AbstractOAuth2Controller;
 use Flarum\Settings\SettingsRepositoryInterface;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Token\AccessToken;
 
 class FacebookAuthController extends AbstractOAuth2Controller
 {
@@ -57,7 +59,7 @@ class FacebookAuthController extends AbstractOAuth2Controller
     /**
      * {@inheritdoc}
      */
-    protected function getIdentification(ResourceOwnerInterface $resourceOwner)
+    protected function getIdentification(ResourceOwnerInterface $resourceOwner, AbstractProvider $provider, AccessToken $token)
     {
         return [
             'email' => $resourceOwner->getEmail()
