@@ -1,18 +1,18 @@
-System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flarum/components/SettingsModal'], function (_export) {
-  'use strict';
+'use strict';
 
+System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flarum/components/SettingsModal'], function (_export, _context) {
   var SettingsModal, FacebookSettingsModal;
   return {
     setters: [function (_flarumComponentsSettingsModal) {
-      SettingsModal = _flarumComponentsSettingsModal['default'];
+      SettingsModal = _flarumComponentsSettingsModal.default;
     }],
     execute: function () {
-      FacebookSettingsModal = (function (_SettingsModal) {
+      FacebookSettingsModal = function (_SettingsModal) {
         babelHelpers.inherits(FacebookSettingsModal, _SettingsModal);
 
         function FacebookSettingsModal() {
           babelHelpers.classCallCheck(this, FacebookSettingsModal);
-          babelHelpers.get(Object.getPrototypeOf(FacebookSettingsModal.prototype), 'constructor', this).apply(this, arguments);
+          return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FacebookSettingsModal).apply(this, arguments));
         }
 
         babelHelpers.createClass(FacebookSettingsModal, [{
@@ -50,21 +50,21 @@ System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flaru
           }
         }]);
         return FacebookSettingsModal;
-      })(SettingsModal);
+      }(SettingsModal);
 
       _export('default', FacebookSettingsModal);
     }
   };
 });;
-System.register('flarum/auth/facebook/main', ['flarum/app', 'flarum/auth/facebook/components/FacebookSettingsModal'], function (_export) {
-  'use strict';
+'use strict';
 
+System.register('flarum/auth/facebook/main', ['flarum/app', 'flarum/auth/facebook/components/FacebookSettingsModal'], function (_export, _context) {
   var app, FacebookSettingsModal;
   return {
     setters: [function (_flarumApp) {
-      app = _flarumApp['default'];
+      app = _flarumApp.default;
     }, function (_flarumAuthFacebookComponentsFacebookSettingsModal) {
-      FacebookSettingsModal = _flarumAuthFacebookComponentsFacebookSettingsModal['default'];
+      FacebookSettingsModal = _flarumAuthFacebookComponentsFacebookSettingsModal.default;
     }],
     execute: function () {
 

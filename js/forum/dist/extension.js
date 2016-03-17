@@ -1,16 +1,16 @@
-System.register('flarum/auth/facebook/main', ['flarum/extend', 'flarum/app', 'flarum/components/LogInButtons', 'flarum/components/LogInButton'], function (_export) {
-  'use strict';
+'use strict';
 
+System.register('flarum/auth/facebook/main', ['flarum/extend', 'flarum/app', 'flarum/components/LogInButtons', 'flarum/components/LogInButton'], function (_export, _context) {
   var extend, app, LogInButtons, LogInButton;
   return {
     setters: [function (_flarumExtend) {
       extend = _flarumExtend.extend;
     }, function (_flarumApp) {
-      app = _flarumApp['default'];
+      app = _flarumApp.default;
     }, function (_flarumComponentsLogInButtons) {
-      LogInButtons = _flarumComponentsLogInButtons['default'];
+      LogInButtons = _flarumComponentsLogInButtons.default;
     }, function (_flarumComponentsLogInButton) {
-      LogInButton = _flarumComponentsLogInButton['default'];
+      LogInButton = _flarumComponentsLogInButton.default;
     }],
     execute: function () {
 
