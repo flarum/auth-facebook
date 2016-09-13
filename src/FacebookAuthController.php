@@ -51,7 +51,7 @@ class FacebookAuthController extends AbstractOAuth2Controller
      */
     protected function getAuthorizationUrlOptions()
     {
-        return ['scope' => ['email']];
+        return ['scope' => ['email', 'public_profile']];
     }
 
     /**
@@ -60,7 +60,7 @@ class FacebookAuthController extends AbstractOAuth2Controller
     protected function getIdentification(ResourceOwnerInterface $resourceOwner)
     {
         return [
-            'email' => $resourceOwner->getEmail()
+            'facebook_id' => $resourceOwner->getId()
         ];
     }
 
@@ -70,6 +70,7 @@ class FacebookAuthController extends AbstractOAuth2Controller
     protected function getSuggestions(ResourceOwnerInterface $resourceOwner)
     {
         return [
+            'email' => $resourceOwner->getEmail(),
             'username' => $resourceOwner->getName(),
             'avatarUrl' => $resourceOwner->getPictureUrl()
         ];
