@@ -14,7 +14,7 @@ System.register('flarum/auth/facebook/components/FacebookSettingsModal', ['flaru
 
         function FacebookSettingsModal() {
           babelHelpers.classCallCheck(this, FacebookSettingsModal);
-          return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FacebookSettingsModal).apply(this, arguments));
+          return babelHelpers.possibleConstructorReturn(this, (FacebookSettingsModal.__proto__ || Object.getPrototypeOf(FacebookSettingsModal)).apply(this, arguments));
         }
 
         babelHelpers.createClass(FacebookSettingsModal, [{
