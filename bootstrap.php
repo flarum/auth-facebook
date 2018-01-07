@@ -19,8 +19,6 @@ return [
     (new Extend\Assets('admin'))
         ->asset(__DIR__.'/js/admin/dist/extension.js')
         ->bootstrapper('flarum/auth/facebook/main'),
-    new Extend\Route(
-        'forum', 'auth.facebook',
-        'get', '/auth/facebook', FacebookAuthController::class
-    )
+    (new Extend\Routes('forum'))
+        ->get('/auth/facebook', 'auth.facebook', FacebookAuthController::class),
 ];
