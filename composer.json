@@ -30,7 +30,7 @@
         "flarum-extension": {
             "title": "Facebook Login",
             "icon": {
-                "name": "facebook",
+                "name": "fab fa-facebook",
                 "backgroundColor": "#3b5998",
                 "color": "#fff"
             }

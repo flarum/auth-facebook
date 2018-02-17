@@ -8,7 +8,7 @@ app.initializers.add('flarum-auth-facebook', () => {
     items.add('facebook',
       <LogInButton
         className="Button LogInButton--facebook"
-        icon="facebook-official"
+        icon="fab fa-facebook"
         path="/auth/facebook">
         {app.translator.trans('flarum-auth-facebook.forum.log_in.with_facebook_button')}
       </LogInButton>
