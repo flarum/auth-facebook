@@ -43,7 +43,7 @@ class FacebookAuthController extends AbstractOAuth2Controller
             'clientId'        => $this->settings->get('flarum-auth-facebook.app_id'),
             'clientSecret'    => $this->settings->get('flarum-auth-facebook.app_secret'),
             'redirectUri'     => $redirectUri,
-            'graphApiVersion' => 'v2.8',
+            'graphApiVersion' => 'v3.0',
         ]);
     }
 
