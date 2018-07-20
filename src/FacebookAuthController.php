@@ -11,14 +11,23 @@
 
 namespace Flarum\Auth\Facebook;
 
+use Exception;
 use Flarum\Forum\AuthenticationResponseFactory;
-use Flarum\Forum\Controller\AbstractOAuth2Controller;
 use Flarum\Settings\SettingsRepositoryInterface;
 use League\OAuth2\Client\Provider\Facebook;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Provider\FacebookUser;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\RedirectResponse;
 
-class FacebookAuthController extends AbstractOAuth2Controller
+class FacebookAuthController implements RequestHandlerInterface
 {
+    /**
+     * @var AuthenticationResponseFactory
+     */
+    protected $authResponse;
+
     /**
      * @var SettingsRepositoryInterface
      */
@@ -26,53 +35,65 @@ class FacebookAuthController extends AbstractOAuth2Controller
 
     /**
      * @param AuthenticationResponseFactory $authResponse
-     * @param SettingsRepositoryInterface $settings
      */
     public function __construct(AuthenticationResponseFactory $authResponse, SettingsRepositoryInterface $settings)
     {
-        $this->settings = $settings;
         $this->authResponse = $authResponse;
+        $this->settings = $settings;
     }
 
     /**
-     * {@inheritdoc}
+     * @param Request $request
+     * @return ResponseInterface
+     * @throws \League\OAuth2\Client\Provider\Exception\FacebookProviderException
+     * @throws Exception
      */
-    protected function getProvider($redirectUri)
+    public function handle(Request $request): ResponseInterface
     {
-        return new Facebook([
-            'clientId'        => $this->settings->get('flarum-auth-facebook.app_id'),
-            'clientSecret'    => $this->settings->get('flarum-auth-facebook.app_secret'),
-            'redirectUri'     => $redirectUri,
+        $redirectUri = (string) $request->getAttribute('originalUri', $request->getUri())->withQuery('');
+
+        $provider = new Facebook([
+            'clientId' => $this->settings->get('flarum-auth-facebook.app_id'),
+            'clientSecret' => $this->settings->get('flarum-auth-facebook.app_secret'),
+            'redirectUri' => $redirectUri,
             'graphApiVersion' => 'v3.0',
         ]);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAuthorizationUrlOptions()
-    {
-        return ['scope' => ['email']];
-    }
+        $session = $request->getAttribute('session');
+        $queryParams = $request->getQueryParams();
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getIdentification(ResourceOwnerInterface $resourceOwner)
-    {
-        return [
-            'email' => $resourceOwner->getEmail()
-        ];
-    }
+        $code = array_get($queryParams, 'code');
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSuggestions(ResourceOwnerInterface $resourceOwner)
-    {
-        return [
-            'username' => $resourceOwner->getName(),
-            'avatarUrl' => $resourceOwner->getPictureUrl()
-        ];
+        if (! $code) {
+            $authUrl = $provider->getAuthorizationUrl();
+            $session->put('oauth2state', $provider->getState());
+
+            return new RedirectResponse($authUrl.'&display=popup');
+        }
+
+        $state = array_get($queryParams, 'state');
+
+        if (! $state || $state !== $session->get('oauth2state')) {
+            $session->remove('oauth2state');
+
+            throw new Exception('Invalid state');
+        }
+
+        $token = $provider->getAccessToken('authorization_code', compact('code'));
+
+        /** @var FacebookUser $user */
+        $user = $provider->getResourceOwner($token);
+
+        return $this->authResponse->make([
+            'identification' => [
+                'email' => $user->getEmail()
+            ],
+            'attributes' => [
+                'avatarUrl' => $user->getPictureUrl()
+            ],
+            'suggestions' => [
+                'username' => $user->getName()
+            ]
+        ]);
     }
 }
