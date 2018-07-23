@@ -13,11 +13,11 @@ use Flarum\Auth\Facebook\FacebookAuthController;
 use Flarum\Extend;
 
 return [
-    (new Extend\Assets('forum'))
+    (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
-        ->asset(__DIR__.'/less/forum.less'),
+        ->css(__DIR__.'/less/forum.less'),
 
-    (new Extend\Assets('admin'))
+    (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js'),
 
     (new Extend\Routes('forum'))
