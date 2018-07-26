@@ -12,7 +12,8 @@
 namespace Flarum\Auth\Facebook;
 
 use Exception;
-use Flarum\Forum\AuthenticationResponseFactory;
+use Flarum\Forum\Auth\ResponseFactory;
+use Flarum\Forum\Auth\Registration;
 use Flarum\Settings\SettingsRepositoryInterface;
 use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\FacebookUser;
@@ -24,9 +25,9 @@ use Zend\Diactoros\Response\RedirectResponse;
 class FacebookAuthController implements RequestHandlerInterface
 {
     /**
-     * @var AuthenticationResponseFactory
+     * @var ResponseFactory
      */
-    protected $authResponse;
+    protected $response;
 
     /**
      * @var SettingsRepositoryInterface
@@ -34,11 +35,11 @@ class FacebookAuthController implements RequestHandlerInterface
     protected $settings;
 
     /**
-     * @param AuthenticationResponseFactory $authResponse
+     * @param ResponseFactory $response
      */
-    public function __construct(AuthenticationResponseFactory $authResponse, SettingsRepositoryInterface $settings)
+    public function __construct(ResponseFactory $response, SettingsRepositoryInterface $settings)
     {
-        $this->authResponse = $authResponse;
+        $this->response = $response;
         $this->settings = $settings;
     }
 
@@ -84,16 +85,15 @@ class FacebookAuthController implements RequestHandlerInterface
         /** @var FacebookUser $user */
         $user = $provider->getResourceOwner($token);
 
-        return $this->authResponse->make([
-            'identification' => [
-                'email' => $user->getEmail()
-            ],
-            'attributes' => [
-                'avatarUrl' => $user->getPictureUrl()
-            ],
-            'suggestions' => [
-                'username' => $user->getName()
-            ]
-        ]);
+        return $this->response->make(
+            'facebook', $user->getId(),
+            function (Registration $registration) use ($user) {
+                $registration
+                    ->provideTrustedEmail($user->getEmail())
+                    ->provideAvatar($user->getPictureUrl())
+                    ->suggestUsername($user->getName())
+                    ->setPayload($user->toArray());
+            }
+        );
     }
 }
