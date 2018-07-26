@@ -12,8 +12,8 @@
 namespace Flarum\Auth\Facebook;
 
 use Exception;
-use Flarum\Forum\Auth\ResponseFactory;
 use Flarum\Forum\Auth\Registration;
+use Flarum\Forum\Auth\ResponseFactory;
 use Flarum\Settings\SettingsRepositoryInterface;
 use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\FacebookUser;
