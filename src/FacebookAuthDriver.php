@@ -10,8 +10,8 @@
 namespace Flarum\Auth\Facebook;
 
 use Exception;
-use Flarum\Forum\Auth\Registration;
-use Flarum\Forum\Auth\ResponseFactory;
+use Flarum\Forum\Auth\SsoDriverInterface;
+use Flarum\Forum\Auth\SsoResponse;
 use Flarum\Http\UrlGenerator;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Laminas\Diactoros\Response\RedirectResponse;
@@ -19,19 +19,19 @@ use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class FacebookAuthController implements RequestHandlerInterface
+class FacebookAuthDriver implements SsoDriverInterface
 {
-    /**
-     * @var ResponseFactory
-     */
-    protected $response;
-
     /**
      * @var SettingsRepositoryInterface
      */
     protected $settings;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     /**
      * @var UrlGenerator
@@ -39,26 +39,37 @@ class FacebookAuthController implements RequestHandlerInterface
     protected $url;
 
     /**
-     * @param ResponseFactory $response
      * @param SettingsRepositoryInterface $settings
+     * @param TranslatorInterface $translator
      * @param UrlGenerator $url
      */
-    public function __construct(ResponseFactory $response, SettingsRepositoryInterface $settings, UrlGenerator $url)
+    public function __construct(SettingsRepositoryInterface $settings, TranslatorInterface $translator, UrlGenerator $url)
     {
-        $this->response = $response;
         $this->settings = $settings;
+        $this->translator = $translator;
         $this->url = $url;
+    }
+
+    public function meta(): array
+    {
+        return [
+            "name" => "Facebook",
+            "icon" => "fab fa-github",
+            "buttonColor" => "#3b5998",
+            "buttonText" => $this->translator->trans('flarum-auth-facebook.forum.log_in.with_facebook_button'),
+            "buttonTextColor" => "#fff",
+        ];
     }
 
     /**
      * @param Request $request
-     * @return ResponseInterface
+     * @param SsoResponse $ssoResponse
      * @throws \League\OAuth2\Client\Provider\Exception\FacebookProviderException
      * @throws Exception
      */
-    public function handle(Request $request): ResponseInterface
+    public function sso(Request $request, SsoResponse $ssoResponse)
     {
-        $redirectUri = $this->url->to('forum')->route('auth.facebook');
+        $redirectUri = $this->url->to('forum')->route('sso', ['driver' => 'facebook']);
 
         $provider = new Facebook([
             'clientId' => $this->settings->get('flarum-auth-facebook.app_id'),
@@ -92,15 +103,11 @@ class FacebookAuthController implements RequestHandlerInterface
         /** @var FacebookUser $user */
         $user = $provider->getResourceOwner($token);
 
-        return $this->response->make(
-            'facebook', $user->getId(),
-            function (Registration $registration) use ($user) {
-                $registration
-                    ->provideTrustedEmail($user->getEmail())
-                    ->provideAvatar($user->getPictureUrl())
-                    ->suggestUsername($user->getName())
-                    ->setPayload($user->toArray());
-            }
-        );
+        return $ssoResponse
+            ->withIdentifier($user->getId())
+            ->provideTrustedEmail($user->getEmail())
+            ->provideAvatar($user->getPictureUrl())
+            ->suggestUsername($user->getName())
+            ->setPayload($user->toArray());
     }
 }
