@@ -54,7 +54,7 @@ class FacebookAuthDriver implements SsoDriverInterface
     {
         return [
             "name" => "Facebook",
-            "icon" => "fab fa-github",
+            "icon" => "fab fa-facebook",
             "buttonColor" => "#3b5998",
             "buttonText" => $this->translator->trans('flarum-auth-facebook.forum.log_in.with_facebook_button'),
             "buttonTextColor" => "#fff",
