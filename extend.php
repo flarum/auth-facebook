@@ -15,5 +15,5 @@ return [
         ->js(__DIR__.'/js/dist/admin.js'),
 
     (new Extend\Auth)
-        ->addAuthDriver('facebook', FacebookAuthDriver::class),
+        ->ssoDriver('facebook', FacebookAuthDriver::class),
 ];

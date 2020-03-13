@@ -69,7 +69,7 @@ class FacebookAuthDriver implements SsoDriverInterface
      */
     public function sso(Request $request, SsoResponse $ssoResponse)
     {
-        $redirectUri = $this->url->to('forum')->route('sso', ['driver' => 'facebook']);
+        $redirectUri = $this->url->to('forum')->route('sso', ['provider' => 'facebook']);
 
         $provider = new Facebook([
             'clientId' => $this->settings->get('flarum-auth-facebook.app_id'),
