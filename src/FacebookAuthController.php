@@ -93,7 +93,8 @@ class FacebookAuthController implements RequestHandlerInterface
         $user = $provider->getResourceOwner($token);
 
         return $this->response->make(
-            'facebook', $user->getId(),
+            'facebook',
+            $user->getId(),
             function (Registration $registration) use ($user) {
                 $registration
                     ->provideTrustedEmail($user->getEmail())
